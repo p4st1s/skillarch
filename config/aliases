@@ -6,7 +6,7 @@ alias ska-help-aliases='alias | fzf'
 alias ska-help-packages='pacman -Q | fzf'
 alias ska-update-simple='ska && make update && make install'
 alias ska-update-advanced='echo "# SAVE your changes on your repo" ; echo "git add foo ; git commit -m i-added-foo ; git push" ; echo "# Then, from a CLEAN git state" ; echo "ska && git status" ; echo "# PULL & CHECKOUT upstream changes" ; echo "git fetch upstream && git checkout main" ; echo "# MERGE upstream changes" ; echo "git merge upstream/main" ; echo "# SAVE your new current state" ; echo "git push origin main" ; echo "# Check & Compare your current drift from upstream" ; echo "git diff upstream/main" ; echo "# Reapply with latest changes" ; echo "ska-update-simple"'
-alias ska-vbox-install-guestutils='sudo pacman -S virtualbox-guest-utils'
+alias ska-vbox-install-guestutils='sudo pacman -S virtualbox-guest-utils && sudo usermod -aG vboxsf "$USER"'
 alias ska-vbox-install='sudo pacman -S virtualbox virtualbox-host-dkms && echo -e "\n\n\nNow reboot to load the vbox drivers"'
 alias ska-sudo-unlock='su -c "faillock --user $USER --reset"'
 alias fastfetch='/usr/bin/fastfetch --logo /opt/skillarch/assets/logo-round-hot.png --logo-width 50'
@@ -64,6 +64,7 @@ alias dns-8='echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf'
 alias dns-9='echo "nameserver 9.9.9.9" | sudo tee /etc/resolv.conf'
 alias get-ip='curl -sS ipinfo.io/ip ; echo'
 alias get-ip-cpy='curl -sS ipinfo.io/ip | cpy'
+alias pub='export PUB=$(curl -s ipv4.ident.me|| curl -sS ifconfig.io); echo -n $PUB | cpy; echo $PUB'
 
 # Video, Audio
 alias webcam-guvcview='guvcview'
@@ -131,7 +132,7 @@ alias getinfo-virustotal='f(){ xdg-open "https://www.virustotal.com/gui/domain/$
 alias getinfo-crtsh='f(){ curl -sk "https://crt.sh/json?q=$1" | jq . ; unset -f f; }; f'
 alias getinfo-wayback='f(){ curl -sk "https://web.archive.org/cdx/search/cdx?fl=original&collapse=urlkey&url=*.$1" ; unset -f f; }; f'
 alias getinfo-leakix='f(){ curl -sk "https://leakix.net/api/graph/hostname/$1?v[]=hostname&v[]=ip&d=auto&l=auto" | jq | grep -ioP "hostname/[^\"]+" | cut -d/ -f2 | sort -uV ; unset -f f; }; f'
-unalias gau # gau real tool instead of omz git alias
+unalias gau 2>/dev/null # gau real tool instead of omz git alias
 
 # Web Fuzzing
 alias probe-urls='f(){ while read url; do curl -sk "$url" -o /dev/null -w "%{http_code}:%{size_download}:%{url_effective}\n" ; done < "$@" ; ; unset -f f; }; f'
@@ -159,7 +160,7 @@ alias dwipe-network='docker network rm $(docker network ls -q | tr "\n" " ")'
 alias dwipe-process='docker rm $(docker ps -a -q)'
 alias dwipe-volume='docker volume rm $(docker volume ls -q | tr "\n" " ")'
 alias di='docker inspect $(docker ps | grep -vF "NAMES" | fzf | cut -d" " -f1) | jq'
-alias dip='docker inspect $(docker ps | grep -vF "NAMES" | fzf | cut -d" " -f1) | jq -r ".[0].NetworkSettings.IPAddress"'
+alias dip='docker inspect $(docker ps | grep -vF "NAMES" | fzf | cut -d" " -f1) | jq | grep -P "(172|10)\."'
 
 # Docker Tooling
 ## Git stuff
