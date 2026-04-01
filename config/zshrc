@@ -120,3 +120,5 @@ eval "$(register-python-argcomplete --no-defaults exegol)"
 # Created by `pipx` on 2025-03-03 15:05:01
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/.pdtm/go/bin
+export BEADS_DIR=/home/user/brain/.beads
+eval "$(tempai completion zsh)"
